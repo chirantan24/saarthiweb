@@ -43,4 +43,40 @@ UserSchema.methods.validatePassword = async function(passwordReceived){
 UserSchema.methods.getJwtToken = function(){
     return jwt.sign({id:this._id},process.env.JWT_SECRET,{expiresIn: process.env.JWT_expiry})
 }
+UserSchema.methods.register = async function(){
+    return new Promise(async (resolve,reject)=>{
+        this.cleanUp();
+        this.data.email = this.data.email.toLowerCase();
+        await this.validate();
+        
+        if(!this.errors.length)
+        {
+            
+            this.data.username = this.data.email.split('@')[0]; 
+                      
+            let salt = bcrypt.genSaltSync(10)
+            this.data.password = bcrypt.hashSync(this.data.password, salt)
+            
+            this.data.email = this.data.email.toLowerCase();
+            
+            console.log(this.data);
+
+            await usersCollection.insertOne({
+                username:this.data.username,
+                email:this.data.email,
+                password:this.data.password,
+                verified:false,
+            }).then((data)=>{
+                resolve(data);
+            }).catch((err)=>{
+                reject(err);
+            }) 
+        }
+        else
+        {
+            reject(this.errors);
+        }
+    })
+}
+
 module.exports = mongoose.model("User",UserSchema)

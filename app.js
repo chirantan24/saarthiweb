@@ -32,11 +32,86 @@ const home = require("./routes/home");
 
 // router middleware
 app.use("/api/v1", home);
-
+app.use(express.static('public'));
 
 app.get('/', (req, res)=>{
     res.render('home')
 })
+
+app.post("/mypost",async(req,res)=>{
+    console.log(req.body);
+    console.log(req.files);
+
+    let result;
+    let imageArray = [];
+    let imageArray2 = [];
+    if(typeof(req.files.Legal) == "object")
+    {
+        result = await cloudinary.uploader.upload(req.files.Legal.tempFilePath,{
+            folder : 'Legal'
+        }) ;
+        imageArray.push({
+            public_id : result.public_id,
+            secure_URL : result.secure_url
+        })
+    }
+    else
+    {
+        
+    for (let index = 0; index < req.files.Legal.length; index++) {
+        console.log(req.files.Legal[index].tempFilePath)
+        result = await cloudinary.uploader.upload(req.files.Legal[index].tempFilePath,{
+            folder : 'Legal'
+        }) ;
+        imageArray.push({
+            public_id : result.public_id,
+            secure_URL : result.secure_url
+        })
+        }
+    }
+    if(typeof(req.files.Pics) == "object")
+    {
+        result = await cloudinary.uploader.upload(req.files.Pics.tempFilePath,{
+            folder : 'Pics'
+        }) ;
+        imageArray2.push({
+            public_id : result.public_id,
+            secure_URL : result.secure_url
+        })
+    }
+    else
+    {
+        
+    for (let index = 0; index < req.files.Pics.length; index++) {
+        console.log(req.files.Pics[index].tempFilePath)
+        result = await cloudinary.uploader.upload(req.files.Pics[index].tempFilePath,{
+            folder : 'Pics'
+        }) ;
+        imageArray2.push({
+            public_id : result.public_id,
+            secure_URL : result.secure_url
+        })
+        }
+    }
+    // let file = req.files.Legal
+
+    // result = await cloudinary.uploader.upload(file.tempFilePath,{
+    //     folder: 'users'
+    // })
+
+    // console.log(result);
+    details = {
+        firstname : req.body.firstname,
+        lastname : req.body.lastname,
+        result : result,
+        imageArray,
+        imageArray2
+    }
+    console.log(details)
+    res.send(details)
+})
+
+
 // export app
 
 module.exports = app;

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Get Form</title>
+</head>
+<body class="bg-dark text-white">
+    <div class="container mt-4 col-4 col-offset-6">
+        <h1 class="display-3">POST Form</h1>
+        <form method="POST" action="/mypost" enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="firstname">First Name</label>
+              <input type="text" class="form-control" name="firstname" id="firstname" aria-describedby="emailHelp">
+              <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+            <div class="form-group">
+              <label for="lastname">Last Name</label>
+              <input type="text" class="form-control" name="lastname" id="lastname">
+            </div>
+            <div class="form-group">
+                <label for="samplefile">Sample File</label>
+                <input type="file" class="form-control" name="samplefile" multiple id="samplefile">
+              </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+    </div>
+</body>
+</html>

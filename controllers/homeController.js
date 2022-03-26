@@ -1,3 +1,6 @@
 exports.home = (req,res) => {
-    res.render('home')
+    res.render('index')
 };
+exports.upload = (req,res) => {
+    res.render('home')
+}
